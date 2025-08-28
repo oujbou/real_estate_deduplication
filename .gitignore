@@ -1,0 +1,86 @@
+# Virtual Environment
+real_estate_ml/
+venv/
+env/
+ENV/
+
+# Data
+data/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# Environment variables
+.env
+.venv
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Data files (large datasets)
+data/listings.csv
+data/duplicate_listings.csv
+data/pictures/
+*.pkl
+*.joblib
+
+# Processed data
+processed/
+models/*.pkl
+models/*.joblib
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+tmp/
+temp/
+
+# Model artifacts
+*.model
+*.bin
+
+# Cache
+.cache/
