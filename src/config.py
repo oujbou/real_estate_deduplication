@@ -83,10 +83,9 @@ config = ProjectConfig()
 # Hardware-specific settings for M4 Pro
 @dataclass
 class HardwareConfig:
-    """Hardware-specific configuration for M4 Pro"""
     
     # Memory management
-    max_memory_gb: int = 20  # Leave 4GB for system
+    max_memory_gb: int = 16  # Leave 8GB for system
     image_processing_memory_limit: int = 2  # GB per batch
     
     # MPS (Metal Performance Shaders) settings for M4 Pro
