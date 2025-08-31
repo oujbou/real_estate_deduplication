@@ -59,8 +59,8 @@ ipython_config.py
 .LSOverride
 
 # Data files (large datasets)
-data/listings.csv
-data/duplicate_listings.csv
+data/listing.csv
+data/duplicate_listing.csv
 data/pictures/
 *.pkl
 *.joblib
@@ -84,3 +84,6 @@ temp/
 
 # Cache
 .cache/
+
+# txt files
+project_structure
