@@ -67,8 +67,12 @@ data/pictures/
 
 # Processed data
 processed/
+
+# Models
 models/*.pkl
 models/*.joblib
+models/
+src/models/
 
 # Logs
 *.log

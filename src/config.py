@@ -87,6 +87,10 @@ class HardwareConfig:
     # Memory management
     max_memory_gb: int = 16  # Leave 8GB for system
     image_processing_memory_limit: int = 2  # GB per batch
+
+    # Image batch size and feature extraction batch size
+    image_batch_size: int = 16
+    feature_extraction_batch_size: int = 100
     
     # MPS (Metal Performance Shaders) settings for M4 Pro
     use_mps: bool = True
