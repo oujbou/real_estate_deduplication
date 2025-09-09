@@ -1,6 +1,5 @@
 """
-Real Estate Duplicate Detection API - Integrated Version
-Contains feature extractor inline to avoid import issues
+Real Estate Duplicate Detection API
 """
 
 from flask import Flask, request, jsonify
@@ -19,7 +18,6 @@ import joblib
 from sklearn.metrics.pairwise import cosine_similarity
 from sentence_transformers import SentenceTransformer
 
-# Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -150,6 +148,9 @@ class MultiModalFeatureExtractor:
         # Find images
         images_A = list(pictures_path.glob(f"{listing_id_A}__*.jpg"))
         images_B = list(pictures_path.glob(f"{listing_id_B}__*.jpg"))
+        logger.info(f"Found {len(images_A)} images for listing {listing_id_A}")
+        logger.info(f"Found {len(images_B)} images for listing {listing_id_B}")
+        
         
         if not images_A or not images_B:
             return 0.0
@@ -158,19 +159,33 @@ class MultiModalFeatureExtractor:
         tensor_A = self.load_and_preprocess_image(images_A[0])
         tensor_B = self.load_and_preprocess_image(images_B[0])
         
-        if tensor_A is None or tensor_B is None:
+        if tensor_A is None:
+            logger.error(f"Failed to load image: {images_A[0]}")
+            return 0.0
+        if tensor_B is None:
+            logger.error(f"Failed to load image: {images_B[0]}")
             return 0.0
         
         # Extract features
-        with torch.no_grad():
-            features_A = self.image_model(tensor_A.to(self.device))
-            features_B = self.image_model(tensor_B.to(self.device))
-            
-            features_A = features_A.view(features_A.size(0), -1).cpu().numpy()
-            features_B = features_B.view(features_B.size(0), -1).cpu().numpy()
-            
-            similarity = cosine_similarity(features_A, features_B)[0][0]
-            return float(similarity)
+        try:
+            with torch.no_grad():
+                features_A = self.image_model(tensor_A.to(self.device))
+                features_B = self.image_model(tensor_B.to(self.device))
+                
+                features_A = features_A.view(features_A.size(0), -1).cpu().numpy()
+                features_B = features_B.view(features_B.size(0), -1).cpu().numpy()
+
+                logger.info(f"Features extracted - A: {features_A.shape}, B: {features_B.shape}")
+                logger.info(f"Feature ranges - A: [{features_A.min():.6f}, {features_A.max():.6f}], B: [{features_B.min():.6f}, {features_B.max():.6f}]")
+                    
+                
+                similarity = cosine_similarity(features_A, features_B)[0][0]
+                logger.info(f"Image similarity calculated: {similarity:.6f}")
+
+                return float(similarity)
+        except Exception as e:
+            logger.info(f"Image feature extraction failed: {e}")
+            return 0.0
     
     def predict_duplicate(self, listing_A, listing_B, threshold=0.5):
         """Predict if two listings are duplicates"""
@@ -308,7 +323,7 @@ if __name__ == '__main__':
     logger.info("Starting Real Estate Duplicate Detection API...")
     
     if initialize_extractor():
-        logger.info("API ready to serve requests")
+        logger.info("API ready tdo serve requests")
         app.run(host='0.0.0.0', port=8000, debug=False)
     else:
         logger.error("Failed to start API")
